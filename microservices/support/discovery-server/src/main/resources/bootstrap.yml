@@ -1,0 +1,10 @@
+spring:
+    application:
+      name: saba-discovery-server
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    appName: SABA-Service-Registry-Cluster
+  environment: local

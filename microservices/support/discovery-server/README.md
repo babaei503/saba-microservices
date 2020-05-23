@@ -1,9 +1,4 @@
-# Spring Boot Microservices
-
-You can run build-all.bat in windows to build all project.
-you can run start-all.bat in windows to run all projects.
-
-## Eureka Server
+# Eureka Server
 
 Run this project as a Spring Boot app (e.g. import into IDE and run
 main method, or use "mvn spring-boot:run"). It will start up on port
@@ -35,4 +30,3 @@ mvn spring-boot:run -Dspring-boot.run.profiles=peer1
 mvn spring-boot:run -Dspring-boot.run.profiles=peer2
 mvn spring-boot:run -Dspring-boot.run.profiles=peer3
 ```
-
