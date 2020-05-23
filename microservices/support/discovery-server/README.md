@@ -30,3 +30,14 @@ mvn spring-boot:run -Dspring-boot.run.profiles=peer1
 mvn spring-boot:run -Dspring-boot.run.profiles=peer2
 mvn spring-boot:run -Dspring-boot.run.profiles=peer3
 ```
+
+The Eureka dashboard will be accessible at 
+
+```
+http://localhost:8761
+http://localhost:8762
+http://localhost:8763
+```
+
+We secure the Eureka server simply by adding Spring Security
+the default user name and password is admin,admin

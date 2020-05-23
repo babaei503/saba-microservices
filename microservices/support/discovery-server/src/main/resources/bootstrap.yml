@@ -1,10 +1,33 @@
+saba:
+  appconfig:
+    user: admin
+    password: admin
+    
+---
+    
 spring:
-    application:
-      name: saba-discovery-server
+  application:
+    name: saba-discovery-server
+  security:
+    basic:
+      enable: true
+    user:
+      name: ${saba.appconfig.user}
+      password: ${saba.appconfig.password} 
+           
+---
+         
 eureka:
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    user: ${saba.appconfig.user}
+    password: ${saba.appconfig.password}
   client:
     register-with-eureka: true
     fetch-registry: true
   instance:
     appName: SABA-Service-Registry-Cluster
   environment: local
+
+  
+ 

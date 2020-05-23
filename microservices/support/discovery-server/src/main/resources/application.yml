@@ -1,36 +1,60 @@
+saba:
+  appconfig:
+    servers:
+      server1:
+        host: eureka1
+        port: 8761
+      server2:
+        host: eureka2    
+        port: 8762
+      server3:
+        host: eureka3    
+        port: 8763
+    
+---
+    
 spring:
   profiles: peer1
 server:
-  port: 8761
+  port: ${saba.appconfig.servers.server1.port}
 eureka:
   instance:
-    hostname: eureka1
+    hostname: ${saba.appconfig.servers.server1.host}
   client:
-    serviceUrl:
-      defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/  
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/,
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server2.host}:${saba.appconfig.servers.server2.port}/eureka/,
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
 
 ---
 
 spring:
   profiles: peer2
 server:
-  port: 8762
+  port: ${saba.appconfig.servers.server2.port}
 eureka:
   instance:
-    hostname: eureka2
+    hostname: ${saba.appconfig.servers.server2.host}
   client:
-    serviceUrl:
-      defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/      
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/,
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server2.host}:${saba.appconfig.servers.server2.port}/eureka/,
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
       
 ---
 
 spring:
   profiles: peer3
 server:
-  port: 8763
+  port: ${saba.appconfig.servers.server3.port}
 eureka:
   instance:
-    hostname: eureka3
+    hostname: ${saba.appconfig.servers.server3.host}
   client:
-    serviceUrl:
-      defaultZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/  
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/,
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server2.host}:${saba.appconfig.servers.server2.port}/eureka/,
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
