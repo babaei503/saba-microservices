@@ -10,6 +10,10 @@ saba:
       server3:
         host: eureka3    
         port: 8763
+        
+spring:
+  profiles:
+    active: peer2        
     
 ---
     

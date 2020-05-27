@@ -46,3 +46,10 @@ http://localhost:8763
 
 We secure the Eureka server simply by adding Spring Security
 the default user name and password is admin,admin
+
+## Product Service
+
+Run this project as a Spring Boot app (e.g. import into IDE and run
+main method, or use "mvn spring-boot:run").
+
+In the service discovery web app we should be able to see the Product service

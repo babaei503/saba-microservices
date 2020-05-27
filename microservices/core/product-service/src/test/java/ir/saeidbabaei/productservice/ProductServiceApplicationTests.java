@@ -1,13 +1,13 @@
-package ir.saeidbabaei.discoveryserver;
+package ir.saeidbabaei.productservice;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class DiscoveryServerApplicationTests {
+class ProductServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
 	}
-	
+
 }
