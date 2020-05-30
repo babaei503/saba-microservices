@@ -1,4 +1,4 @@
-package ir.saeidbabaei.productreviewservice.model;
+package ir.saeidbabaei.productrecommendationservice.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +10,11 @@ import javax.validation.constraints.Size;
 
 
 /**
- * The persistent class for the review database table.
+ * The persistent class for the recommendation database table.
  * 
  */
 @Entity
-public class Review  {
+public class Recommendation  {
 
 
 	@Id
@@ -28,41 +28,40 @@ public class Review  {
     @NotNull
 	private String author;
 
-    @Size(min = 3, max = 50)
     @NotNull
-    private String subject;
+    private int rate;
     
     @Size(min = 3, max = 50)
     @NotNull
     private String content;
 	
 
-	public Review() {
+	public Recommendation() {
 	}
 	
 	/**
-	 * @param	productId		Product of review.
-	 * @param	author			Author of review.
-	 * @param	subject			Subject of review.
-	 * @param	content			Content of review.	 
+	 * @param	productId		Product of recommendation.
+	 * @param	author			Author of recommendation.
+	 * @param	rate			Rate of recommendation.
+	 * @param	content			Content of recommendation.	 
 	 */
-    public Review(@NotNull long productId, @Size(min = 3, max = 50) @NotNull String author, @Size(min = 3, max = 50) @NotNull String subject, @Size(min = 3, max = 50) @NotNull String content) {
+    public Recommendation(@NotNull long productId, @Size(min = 3, max = 50) @NotNull String author, @NotNull int rate, @Size(min = 3, max = 50) @NotNull String content) {
         this.productId = productId;
         this.author = author;
-        this.subject = subject;
+        this.rate = rate;
         this.content = content;
     }
     
 
 	/**
-	 * @return The review id
+	 * @return The recommendation id
 	 */
 	public long getId() {
 		return id;
 	}
 
 	/**
-	 * @param id The review id to set
+	 * @param id The recommendation id to set
 	 */
 	public void setId(long id) {
 		this.id = id;
@@ -97,17 +96,17 @@ public class Review  {
     }
 	
 	/**
-	 * @return The subject
+	 * @return The rate
 	 */
-    public String getSubject() {
-        return subject;
+    public int getRate() {
+        return rate;
     }
 
 	/**
-	 * @param subject The subject to set
+	 * @param rate The rate to set
 	 */
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubject(int rate) {
+        this.rate = rate;
     }
     
 	/**
