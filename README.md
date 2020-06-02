@@ -49,6 +49,8 @@ the default user name and password is admin,admin
 
 ## Product Service
 
+This service responsible for handling information regarding products
+
 Run this project as a Spring Boot app (e.g. import into IDE and run
 main method, or use "mvn spring-boot:run").
 
@@ -56,12 +58,27 @@ In the service discovery web app we should be able to see the Product service
 
 ## Product Review Service
 
+This service responsible for handling information regarding reviews
+
 Run this project as a Spring Boot app (e.g. import into IDE and run
 main method, or use "mvn spring-boot:run").
 
 In the service discovery web app we should be able to see Product Review service
 
 ## Product Recommendation Service
+
+This service responsible for handling information regarding recommendations
+
+Run this project as a Spring Boot app (e.g. import into IDE and run
+main method, or use "mvn spring-boot:run").
+
+In the service discovery web app we should be able to see Product Recommendation service
+
+## Product Composite Service
+
+This service, can aggregate information from the three core product 
+services and compose a view of product information together with reviews 
+and recommendations of a product.
 
 Run this project as a Spring Boot app (e.g. import into IDE and run
 main method, or use "mvn spring-boot:run").

@@ -67,7 +67,7 @@ public class ReviewController {
      * @return				Response 200 OK. Review info.
 	 * @throw				EntityNotFoundException.     
 	 */
-	@GetMapping("/edit/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Review> retrieveReview(@PathVariable long id) {
 		
 			Optional<Review> review = reviewService.findById(id);

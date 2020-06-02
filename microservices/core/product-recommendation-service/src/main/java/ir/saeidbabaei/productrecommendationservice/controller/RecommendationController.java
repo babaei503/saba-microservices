@@ -67,7 +67,7 @@ public class RecommendationController {
      * @return				Response 200 OK. Recommendation info.
 	 * @throw				EntityNotFoundException.     
 	 */
-	@GetMapping("/edit/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Recommendation> retrieveRecommendation(@PathVariable long id) {
 		
 			Optional<Recommendation> recommendation = recommendationService.findById(id);

@@ -1,0 +1,36 @@
+saba:
+  appconfig:
+    user: admin
+    password: admin
+    servers:
+      server1:
+        host: eureka1
+        port: 8761
+      product-service: 
+        host: http://localhost
+        port: 8080
+      product-review-service: 
+        host: http://localhost
+        port: 8081        
+      product-recommendation-service: 
+        host: http://localhost
+        port: 8082
+
+    
+---
+
+server:
+  port: 8083
+spring:
+  application:
+    name: saba-product-composite-service
+    
+---
+         
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/
