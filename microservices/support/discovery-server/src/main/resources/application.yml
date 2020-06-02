@@ -24,6 +24,7 @@ server:
 eureka:
   instance:
     hostname: ${saba.appconfig.servers.server1.host}
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
   client:
     serviceUrl:      
       defaultZone: >-
@@ -40,6 +41,7 @@ server:
 eureka:
   instance:
     hostname: ${saba.appconfig.servers.server2.host}
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}} 
   client:
     serviceUrl:      
       defaultZone: >-
@@ -56,6 +58,7 @@ server:
 eureka:
   instance:
     hostname: ${saba.appconfig.servers.server3.host}
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
   client:
     serviceUrl:      
       defaultZone: >-

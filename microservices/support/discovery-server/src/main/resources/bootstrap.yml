@@ -25,8 +25,10 @@ eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
+    registryFetchIntervalSeconds: 5
   instance:
     appName: SABA-Service-Registry-Cluster
+    leaseRenewalIntervalInSeconds: 10
   environment: local
 
   

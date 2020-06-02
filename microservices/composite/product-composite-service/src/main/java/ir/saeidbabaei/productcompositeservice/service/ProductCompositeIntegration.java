@@ -1,6 +1,7 @@
 package ir.saeidbabaei.productcompositeservice.service;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,44 +27,34 @@ import ir.saeidbabaei.productcompositeservice.util.Util;
  */
 @Component
 public class ProductCompositeIntegration {
-	
+
     private final String productService;
     private final String recommendationService;
     private final String reviewService;
     
-    private final int productServicePort;
-    private final int recommendationServicePort;
-    private final int reviewServicePort;
-
     private RestTemplate restTemplate = new RestTemplate();
     
     @Autowired
     Util util; 
-   
+    
     @Autowired
     public ProductCompositeIntegration(
-        @Value("${saba.appconfig.servers.product-service.host}") String productService,
-        @Value("${saba.appconfig.servers.product-recommendation-service.host}") String recommendationService,
-        @Value("${saba.appconfig.servers.product-review-service.host}") String reviewService,
-        @Value("${saba.appconfig.servers.product-service.port}") int productServicePort,
-        @Value("${saba.appconfig.servers.product-recommendation-service.port}") int recommendationServicePort,
-        @Value("${saba.appconfig.servers.product-review-service.port}") int reviewServicePort) {
+            @Value("${saba.appconfig.servers.product}") String productService,
+            @Value("${saba.appconfig.servers.recommendation}") String recommendationService,
+            @Value("${saba.appconfig.servers.review}") String reviewService) {
 
-        this.productService = productService;
-        this.recommendationService = recommendationService;
-        this.reviewService = reviewService;
-        
-        this.productServicePort = productServicePort;
-        this.recommendationServicePort = recommendationServicePort;
-        this.reviewServicePort = reviewServicePort;
-
+            this.productService = productService;
+            this.recommendationService = recommendationService;
+            this.reviewService = reviewService;
     }
     
     public ResponseEntity<Product> getProduct(long id) {
 
         try {
 
-            String url = productService + ":" + productServicePort + "/api/product/" + id;
+        	URI uri = util.getServiceUrl(productService, "http://localhost:8080");
+        	
+            String url = uri.toString() + "/api/product/" + id;
 
             ResponseEntity<String> resultStr = restTemplate.getForEntity(url, String.class);
 
@@ -81,7 +72,9 @@ public class ProductCompositeIntegration {
     public ResponseEntity<List<Recommendation>> getRecommendations(long productId) {
         try {
 
-            String url = recommendationService + ":" + recommendationServicePort + "/api/product-recommendation" + "/get-by-product/" + productId;
+        	URI uri = util.getServiceUrl(recommendationService, "http://localhost:8082");
+        	
+            String url = uri.toString() + "/api/product-recommendation" + "/get-by-product/" + productId;
 
             ResponseEntity<String> resultStr = restTemplate.getForEntity(url, String.class);
 
@@ -98,7 +91,9 @@ public class ProductCompositeIntegration {
 
         try {
 
-            String url = reviewService + ":" + reviewServicePort + "/api/product-review" + "/get-by-product/" + productId;
+        	URI uri = util.getServiceUrl(reviewService, "http://localhost:8081");
+        	
+            String url = uri.toString() + "/api/product-review" + "/get-by-product/" + productId;
 
             ResponseEntity<String> resultStr = restTemplate.getForEntity(url, String.class);
 
