@@ -1,0 +1,55 @@
+saba:
+  appconfig:
+    user: admin
+    password: admin
+    servers:
+      server1:
+        host: eureka1
+        port: 8761
+
+---
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+
+---
+
+server:
+  port: 8765
+spring:
+  application:
+    name: saba-edge-server 
+    
+---    
+     
+info:
+  component: Zuul Server
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+zuul:
+  ignoredServices: "*"
+  routes:
+    saba-product-composite-service:
+      path: /api/product-composite/**
+      strip-prefix: false
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: INFO
