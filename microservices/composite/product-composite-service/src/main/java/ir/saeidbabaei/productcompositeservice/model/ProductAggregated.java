@@ -18,19 +18,22 @@ public class ProductAggregated {
 
     public ProductAggregated(Product product, List<Recommendation> recommendations, List<Review> reviews) {
 
-        this.id = product.getId();
-        this.name = product.getName();
-        this.color = product.getColor();
-
-        if (recommendations != null)
-            this.recommendations = recommendations.stream()
-                .map(r -> new RecommendationSummary(r.getId(), r.getAuthor(), r.getRate()))
-                .collect(Collectors.toList());
-
-        if (reviews != null)
-            this.reviews = reviews.stream()
-                .map(r -> new ReviewSummary(r.getId(), r.getAuthor(), r.getSubject()))
-                .collect(Collectors.toList());
+        if (product != null)
+        {
+	        this.id = product.getId();
+	        this.name = product.getName();
+	        this.color = product.getColor();
+	
+	        if (recommendations != null)
+	            this.recommendations = recommendations.stream()
+	                .map(r -> new RecommendationSummary(r.getId(), r.getAuthor(), r.getRate()))
+	                .collect(Collectors.toList());
+	
+	        if (reviews != null)
+	            this.reviews = reviews.stream()
+	                .map(r -> new ReviewSummary(r.getId(), r.getAuthor(), r.getSubject()))
+	                .collect(Collectors.toList());
+        }
     }
 
     public long getId() {

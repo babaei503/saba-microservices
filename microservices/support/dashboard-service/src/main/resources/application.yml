@@ -6,17 +6,14 @@ saba:
       server1:
         host: eureka1
         port: 8761
-      product: saba-product-service
-      recommendation: saba-product-recommendation-service
-      review: saba-product-review-service
 
 ---
 
 server:
-  port: 0
+  port: 7979
 spring:
   application:
-    name: saba-product-composite-service
+    name: saba-dashboard-service
 
 ---
 
@@ -30,12 +27,4 @@ eureka:
     registryFetchIntervalSeconds: 5
   instance:
     leaseRenewalIntervalInSeconds: 10
-    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
-    
----
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: hystrix.stream, info, health       
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}       

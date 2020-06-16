@@ -9,15 +9,15 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ir.saeidbabaei</groupId>
-	<artifactId>product-service</artifactId>
+	<artifactId>dashboard-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>product-service</name>
-	<description>Product microservice</description>
+	<name>dashboard-service</name>
+	<description>Monitor Dashboard</description>
 
 	<properties>
 		<java.version>14</java.version>
-		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>
-		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>		
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>	
 	</properties>
 
 	<dependencies>
@@ -26,16 +26,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         
-        <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		
 		<dependency>
-		    <groupId>javax.validation</groupId>
-		    <artifactId>validation-api</artifactId>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+		</dependency>
+			
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -47,20 +47,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-    	</dependency>	
-    	
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-
-
-            
 	</dependencies>
 
 	<dependencyManagement>
@@ -74,7 +60,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	
 	<build>
 		<plugins>
 			<plugin>

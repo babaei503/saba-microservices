@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import ir.saeidbabaei.productcompositeservice.model.Product;
 import ir.saeidbabaei.productcompositeservice.model.Recommendation;
@@ -47,7 +49,14 @@ public class ProductCompositeIntegration {
             this.recommendationService = recommendationService;
             this.reviewService = reviewService;
     }
-    
+
+    /**
+     * Get product info by id
+     *
+     * @param		id		Product Id
+     * @return				Product
+     */
+    @HystrixCommand(fallbackMethod = "defaultProduct")
     public ResponseEntity<Product> getProduct(long id) {
 
         try {
@@ -67,8 +76,28 @@ public class ProductCompositeIntegration {
         }
 
     }
+    
+
+    /**
+     * Fallback method for getProduct()
+     *
+     * @param		id		Product Id
+     * @return				ResponseEntity BAD_GATEWAY
+     */
+    public ResponseEntity<Product> defaultProduct(long id) {
+    	
+        return util.createResponse(null, HttpStatus.BAD_GATEWAY);
+        
+    }
 
 
+    /**
+     * Get recommendations of product
+     *
+     * @param		productId	Product Id	
+     * @return					ResponseEntity BAD_GATEWAY
+     */
+    @HystrixCommand(fallbackMethod = "defaultRecommendations")
     public ResponseEntity<List<Recommendation>> getRecommendations(long productId) {
         try {
 
@@ -87,6 +116,27 @@ public class ProductCompositeIntegration {
         }
     }
 
+    
+    /**
+     * Fallback method for getRecommendations()
+     *
+     * @param		productId	Product Id	
+     * @return					ResponseEntity BAD_GATEWAY
+     */
+    public ResponseEntity<List<Recommendation>> defaultRecommendations(long productId) {
+
+        return util.createResponse(null, HttpStatus.BAD_GATEWAY);
+        
+    }
+    
+ 
+    /**
+     * Get reviews of product
+     *
+     * @param		productId	Product Id	
+     * @return					ResponseEntity BAD_GATEWAY
+     */
+    @HystrixCommand(fallbackMethod = "defaultReviews")
     public ResponseEntity<List<Review>> getReviews(long productId) {
 
         try {
@@ -105,6 +155,20 @@ public class ProductCompositeIntegration {
         }
     }
 
+    
+    /**
+     * Fallback method for getReviews()
+     *
+     * @param		productId	Product Id	
+     * @return					ResponseEntity BAD_GATEWAY
+     */
+    public ResponseEntity<List<Review>> defaultReviews(long productId) {
+
+        return util.createResponse(null, HttpStatus.BAD_GATEWAY);
+        
+    }
+    
+    
     private ObjectReader productReader = null;
     private ObjectReader getProductReader() {
 

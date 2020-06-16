@@ -1,8 +1,4 @@
 :: Start microservices
-:: Discovery Server
-start /D  microservices\support\discovery-server	mvn spring-boot:run -Dspring-boot.run.profiles=peer1
-start /D  microservices\support\discovery-server	mvn spring-boot:run -Dspring-boot.run.profiles=peer2
-start /D  microservices\support\discovery-server	mvn spring-boot:run -Dspring-boot.run.profiles=peer3
 :: Product Service
 start /D  microservices\core\product-service	mvn spring-boot:run
 start /D  microservices\core\product-service	mvn spring-boot:run
@@ -18,5 +14,3 @@ start /D  microservices\core\product-recommendation-service	mvn spring-boot:run 
 :: Product Composite Service
 start /D  microservices\composite\product-composite-service	mvn spring-boot:run
 start /D  microservices\composite\product-composite-service	mvn spring-boot:run
-:: Edge Server
-start /D  microservices\support\edge-server	mvn spring-boot:run

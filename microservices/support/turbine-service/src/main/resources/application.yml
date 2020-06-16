@@ -24,37 +24,15 @@ eureka:
 ---
 
 server:
-  port: 8765
+  port: 8989
 spring:
   application:
-    name: saba-edge-server 
+    name: saba-turbine-service
     
 ---    
-     
-info:
-  component: Zuul Server
-
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
-
-zuul:
-  ignoredServices: "*"
-  routes:
-    api-path:
-      path: /api/product-composite/**
-      strip-prefix: false
-      serviceId: saba-product-composite-service
-    hystrix-path:
-      path: /actuator/**
-      strip-prefix: false
-      serviceId: saba-product-composite-service      
-
-logging:
-  level:
-    ROOT: INFO
-    org.springframework.web: INFO
+   
+turbine:
+      appConfig: saba-product-composite-service
+      aggregator:
+        clusterConfig: default
+      clusterNameExpression: new String("default")      

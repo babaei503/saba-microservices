@@ -1,7 +1,8 @@
 # Spring Boot Microservices
 
 You can run build-all.bat in windows to build all project.
-you can run start-all.bat in windows to run all projects.
+you can run start-infra-micros.bat and start-busns-micros.bat in windows 
+to run all projects.
 
 ## Eureka Server
 
@@ -101,4 +102,26 @@ request to an appropriate service instance.
 Start to call the composite service through the edge server, The edge 
 server is found on the port 8765  and as we have seen above we can use 
 the path /api/product-composite/** to reach the product-composite 
-service through our edge server. 
+service through our edge server.
+
+## Turbine Service
+
+Run this project as a Spring Boot app (e.g. import into IDE and run
+main method, or use "mvn spring-boot:run").
+
+Turbine can, based on information in Eureka, provide the dashboard 
+with information from all circuit breakers in a system landscape.
+
+The Turbine dashboard will be accessible at
+http://localhost:8989/turbine.stream?cluster=default
+
+## Dashboard Service
+
+Run this project as a Spring Boot app (e.g. import into IDE and run
+main method, or use "mvn spring-boot:run").
+
+If you run from this project it will be on port 7979. On the home 
+page is a form where you can enter the URL for an event stream to 
+monitor, for example The Turbine dashboard will be accessible at:
+
+http://localhost:8989/turbine.stream?cluster=default
