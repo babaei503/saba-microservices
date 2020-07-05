@@ -28,31 +28,31 @@ server:
 spring:
   application:
     name: saba-edge-server 
-    
+   
 ---    
      
 info:
   component: Zuul Server
 
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
-
 zuul:
-  ignoredServices: "*"
   routes:
+    auth-server-path:
+      path: /uaa/**
+      serviceId: saba-auth-server  
+      stripPrefix: false  
+    dashboard-service-path:
+      path: /dashboard/**
+      serviceId: saba-dashboard-service  
+      stripPrefix: false
     api-path:
       path: /api/product-composite/**
       strip-prefix: false
-      serviceId: saba-product-composite-service
-    hystrix-path:
-      path: /actuator/**
-      strip-prefix: false
-      serviceId: saba-product-composite-service      
+      serviceId: saba-product-composite-service     
+  sensitiveHeaders: Cookie,Set-Cookie
+  host:
+    connect-timeout-millis: 60000 
+    socket-timeout-millis: 60000  
+---     
 
 logging:
   level:

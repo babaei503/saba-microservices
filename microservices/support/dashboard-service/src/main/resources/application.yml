@@ -10,7 +10,9 @@ saba:
 ---
 
 server:
-  port: 7979
+  port: 0
+  servlet:
+    context-path: /dashboard  
 spring:
   application:
     name: saba-dashboard-service

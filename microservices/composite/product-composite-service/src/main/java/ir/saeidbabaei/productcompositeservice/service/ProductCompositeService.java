@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ir.saeidbabaei.productcompositeservice.model.Product;
 import ir.saeidbabaei.productcompositeservice.model.Recommendation;
 import ir.saeidbabaei.productcompositeservice.model.Review;
-import ir.saeidbabaei.productcompositeservice.util.Util;
 
 
 /**
@@ -22,9 +21,6 @@ public class ProductCompositeService implements IProductCompositeService {
 
 	@Autowired
 	ProductCompositeIntegration productCompositeIntegration;
-	
-    @Autowired
-    Util util; 
 	
     
     public Product getBasicProductInfo(Long id) {

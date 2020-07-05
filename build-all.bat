@@ -6,5 +6,6 @@ pushd microservices\composite\product-composite-service &                call mv
 pushd microservices\support\edge-server &                call mvn compile & popd
 pushd microservices\support\turbine-service &                call mvn compile & popd
 pushd microservices\support\dashboard-service &                call mvn compile & popd
+pushd microservices\support\auth-server &                call mvn compile & popd
 @echo off
 pause

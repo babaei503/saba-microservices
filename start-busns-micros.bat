@@ -14,3 +14,4 @@ start /D  microservices\core\product-recommendation-service	mvn spring-boot:run 
 :: Product Composite Service
 start /D  microservices\composite\product-composite-service	mvn spring-boot:run
 start /D  microservices\composite\product-composite-service	mvn spring-boot:run
+start /D  microservices\composite\product-composite-service	mvn spring-boot:run -Dspring-boot.run.profiles=fallback
