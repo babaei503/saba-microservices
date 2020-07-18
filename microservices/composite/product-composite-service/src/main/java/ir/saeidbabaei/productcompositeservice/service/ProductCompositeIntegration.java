@@ -61,7 +61,7 @@ public class ProductCompositeIntegration {
 
         try {
 
-        	URI uri = util.getServiceUrl(productService, "http://localhost:8080");
+        	URI uri = util.getServiceUrl(productService);
         	
             String url = uri.toString() + "/api/product/" + id;
 
@@ -101,7 +101,7 @@ public class ProductCompositeIntegration {
     public ResponseEntity<List<Recommendation>> getRecommendations(long productId) {
         try {
 
-        	URI uri = util.getServiceUrl(recommendationService, "http://localhost:8082");
+        	URI uri = util.getServiceUrl(recommendationService);
         	
             String url = uri.toString() + "/api/product-recommendation" + "/get-by-product/" + productId;
 
@@ -141,7 +141,7 @@ public class ProductCompositeIntegration {
 
         try {
 
-        	URI uri = util.getServiceUrl(reviewService, "http://localhost:8081");
+        	URI uri = util.getServiceUrl(reviewService);
         	
             String url = uri.toString() + "/api/product-review" + "/get-by-product/" + productId;
 

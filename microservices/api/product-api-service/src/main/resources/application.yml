@@ -5,8 +5,29 @@ saba:
     servers:
       server1:
         host: eureka1
-        port: 8761     
+        port: 8761
+      productCompositeService: saba-product-composite-service
 
+---
+
+server:
+  port: 0
+spring:
+  application:
+    name: saba-product-api-service
+    
+  
+---   
+      
+security:
+  oauth2:
+    client:  
+      client-id: saba-product-api-service
+      client-secret: secret123 
+    resource:
+      id: saba-product-api-service
+      token-info-uri: http://localhost:8765/uaa/oauth/check_token
+    
 ---
 
 eureka:
@@ -22,32 +43,15 @@ eureka:
     instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
     
 ---
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream, info, health      
+        
+---
     
 logging:
   level: 
-    org.springframework.security: DEBUG  
-
----
-
-server:
-  port: 0
-  servlet:
-    context-path: /uaa
-spring:
-  application:
-    name: saba-auth-server
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        format_sql: true 
-    show-sql: true    
-  datasource:
-    url: jdbc:mysql://localhost:3306/authdb?useSSL=false&allowPublicKeyRetrieval=true
-    username: saba
-    password: a+123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  messages:
-    basename: validation
+    org.springframework.security: DEBUG       

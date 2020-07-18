@@ -41,10 +41,3 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
     instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
-
----
-
-spring:
-  profiles: fallback
-server:
-  port: 8080

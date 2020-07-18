@@ -1,4 +1,4 @@
-package ir.saeidbabaei.productcompositeservice.util;
+package ir.saeidbabaei.productapiservice.util;
 
 import java.net.URI;
 
@@ -20,7 +20,7 @@ public class Util {
 
     @Autowired
     private LoadBalancerClient loadBalancer;
-   
+
     /**
      * Find a service instance and return its URI to the service consumer
      *
@@ -30,7 +30,7 @@ public class Util {
    public URI getServiceUrl(String serviceName) {
        return getServiceUrl(serviceName, null);
    }
-
+   
     /**
      * Find a service instance and return its URI to the service consumer
      *

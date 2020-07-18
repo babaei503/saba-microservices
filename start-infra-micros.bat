@@ -11,3 +11,4 @@ start /D  microservices\support\dashboard-service	mvn spring-boot:run
 start /D  microservices\support\turbine-service	mvn spring-boot:run
 :: Auth Server
 start /D  microservices\support\auth-server	mvn spring-boot:run
+start /D  microservices\support\auth-server	mvn spring-boot:run

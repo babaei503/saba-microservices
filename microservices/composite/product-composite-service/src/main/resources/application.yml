@@ -39,10 +39,3 @@ management:
     web:
       exposure:
         include: hystrix.stream, info, health
-
----
-
-spring:
-  profiles: fallback
-server:
-  port: 8083

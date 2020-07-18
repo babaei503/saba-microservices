@@ -44,10 +44,9 @@ zuul:
       path: /dashboard/**
       serviceId: saba-dashboard-service  
       stripPrefix: false
-    api-path:
-      path: /api/product-composite/**
-      strip-prefix: false
-      serviceId: saba-product-composite-service     
+    product-api-path:
+      path: /api/product/**
+      serviceId: saba-product-api-service   
   sensitiveHeaders: Cookie,Set-Cookie
   host:
     connect-timeout-millis: 60000 

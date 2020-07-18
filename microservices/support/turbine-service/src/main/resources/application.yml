@@ -32,7 +32,7 @@ spring:
 ---    
    
 turbine:
-      appConfig: saba-product-composite-service
+      appConfig: saba-product-composite-service,saba-product-api-service
       aggregator:
         clusterConfig: default
       clusterNameExpression: new String("default")      
