@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 .antMatchers("/error**").permitAll()
                 .antMatchers("/oauth/signup**").permitAll()
+                .antMatchers("/.well-known/jwks.json").permitAll()
                 .antMatchers("/oauth/approve-user**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and().formLogin().permitAll()

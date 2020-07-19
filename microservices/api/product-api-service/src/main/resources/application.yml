@@ -26,7 +26,8 @@ security:
       client-secret: secret123 
     resource:
       id: saba-product-api-service
-      token-info-uri: http://localhost:8765/uaa/oauth/check_token
+      jwk:
+        key-set-uri: http://localhost:8765/uaa/.well-known/jwks.json      
     
 ---
 

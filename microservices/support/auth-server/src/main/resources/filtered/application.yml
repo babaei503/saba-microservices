@@ -5,7 +5,11 @@ saba:
     servers:
       server1:
         host: eureka1
-        port: 8761     
+        port: 8761
+    KEY_STORE_FILE: saba-jwt.jks
+    KEY_STORE_PASSWORD: saba-pass
+    KEY_ALIAS: saba-oauth-jwt
+    JWK_KID: saba-key-id
 
 ---
 

@@ -121,6 +121,12 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<dependency>
+		    <groupId>com.nimbusds</groupId>
+		    <artifactId>nimbus-jose-jwt</artifactId>
+		    <version>8.19</version>
+		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
@@ -154,12 +160,29 @@
 	</dependencyManagement>
 	
 	<build>
+
 		<plugins>
+		
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<artifactId>spring-boot-maven-plugin</artifactId>			
 			</plugin>
+      		    
 		</plugins>
+		
+	    <resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <filtering>false</filtering>
+	        </resource>
+	        <resource>
+	            <directory>src/main/resources/filtered</directory>
+	            <filtering>true</filtering>
+	        </resource>
+    	</resources>
+	
 	</build>
+	
+	
 
 </project>
