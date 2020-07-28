@@ -1,8 +1,9 @@
 # Spring Boot Microservices
 
 You can run build-all.bat in windows to build all project.
-you can run start-infra-micros.bat and start-busns-micros.bat in windows 
-to run all projects.
+you can run start-base-infra-micros.bat and then start-infra-micros.bat 
+in windows to run all infrastructure microservices.
+you can run start-busns-micros.bat in windows to run all business microservices.
 
 ## Eureka Server
 
@@ -169,4 +170,33 @@ server is found on the port 8765 and we can use the path
 http://localhost:8765/api/product/** to reach the product-api 
 service through our edge server.
 
-You must send auth-server bearer token in the Authorization header. 
+You must send auth-server bearer token in the Authorization header.
+
+## Config Server
+
+This service will act as a configuration server and we will expose 
+its services through the 8888 port.
+
+We use this server to centralize management of all the configuration files.
+
+Run this project as a Spring Boot app (e.g. import into IDE and run
+main method, or use "mvn spring-boot:run").
+
+The configuration files are stored locally in a Git repo during development, 
+but are normally hosted on a remote Git server.
+
+You can find config Git repo on saba-microservices-config repository.
+
+You can call the end point from:
+
+http://localhost:8888/microservice-name/profile
+
+for example:
+
+http://localhost:8888/saba-product-api-service/default
+
+Use Basic Authentication (admin, admin) to call the end point.
+
+You should configure bootstrap.yml of the other microservices to use the 
+configuration server. Microservices can lookup a config server using the 
+discovery server or bind directly to the config server url.

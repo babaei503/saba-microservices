@@ -1,0 +1,41 @@
+saba:
+  appconfig:
+    user: admin
+    password: admin
+    configUser: admin
+    configPassword: admin 
+    servers:
+      server1:
+        host: eureka1
+        port: 8761       
+        
+---
+        
+spring:
+  application:
+    name: saba-product-review-service
+  cloud:
+    config:    
+      uri: http://localhost:8888
+      failFast: true
+      retry:
+        initialInterval: 3000
+        multiplier: 1.3
+        maxInterval: 5000
+        maxAttempts: 20
+      discovery:
+#Set enabled: true to use discovery server or Set enabled: false to use direct uri http://localhost:8888   
+        enabled: true
+        serviceId: saba-config-server
+      username: ${saba.appconfig.configUser}
+      password: ${saba.appconfig.configPassword}     
+      
+---
+      
+eureka:
+  client:
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/
+  instance:
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}     

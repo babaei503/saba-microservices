@@ -47,12 +47,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId> 
         </dependency>
-        
-       <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		
 		<dependency>
             <groupId>mysql</groupId>
@@ -127,7 +121,12 @@
 		    <artifactId>nimbus-jose-jwt</artifactId>
 		    <version>8.19</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
+				
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-test</artifactId>

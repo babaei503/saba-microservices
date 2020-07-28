@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-	
 	@Value("${security.oauth2.resource.id}")
 	private String resourceId;
 	

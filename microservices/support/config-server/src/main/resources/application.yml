@@ -1,0 +1,53 @@
+saba:
+  appconfig:
+    user: admin
+    password: admin
+    configUser: admin
+    configPassword: admin
+    servers:
+      server1:
+        host: eureka1
+        port: 8761
+
+---
+
+server:
+  port: 8888
+spring:
+  application:
+    name: saba-config-server
+
+---
+    
+#encrypt:
+#  key: SABA_CONFIG_ENCRYPT_KEY
+  
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+# Configuration of a local Git-repo for development locally via file: protocol        
+          uri: file:///E:/Source/saba-microsevices-config
+# Configuration of a remote Git-repo          
+#          uri: https://github.com/babaei503/saba-microsevices-config.git
+#          username: YourGitUser
+#          password: YourGitPass
+  security:
+    user:
+      name: ${saba.appconfig.configUser}
+      password: ${saba.appconfig.configPassword}
+---
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:      
+      defaultZone: >-
+        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}      
