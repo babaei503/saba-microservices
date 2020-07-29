@@ -16,12 +16,8 @@ server:
 spring:
   application:
     name: saba-config-server
-
----
-    
-#encrypt:
-#  key: SABA_CONFIG_ENCRYPT_KEY
   
+---
 
 spring:
   cloud:
@@ -29,7 +25,7 @@ spring:
       server:
         git:
 # Configuration of a local Git-repo for development locally via file: protocol        
-          uri: file:///E:/Source/saba-microsevices-config
+          uri: file:///E:/source/saba-microsevices-config
 # Configuration of a remote Git-repo          
 #          uri: https://github.com/babaei503/saba-microsevices-config.git
 #          username: YourGitUser
@@ -50,4 +46,10 @@ eureka:
     registryFetchIntervalSeconds: 5
   instance:
     leaseRenewalIntervalInSeconds: 10
-    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}      
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+              
+---
+
+spring.rabbitmq:
+  host: localhost
+  port: 5672  
