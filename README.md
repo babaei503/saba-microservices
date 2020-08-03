@@ -221,3 +221,25 @@ You should install RabbitMQ server to use push notifications.
 You should configure bootstrap.yml of the other microservices to use the 
 configuration server. Microservices can lookup a config server using the 
 discovery server or bind directly to the config server url.
+
+## Tracing Server
+
+Zipkin is a distributed tracing system. It helps gather timing data needed 
+to troubleshoot latency problems in service architectures. Features include 
+both the collection and lookup of this data.
+
+The Zipkin server runs as a standalone jar.
+start java -jar  microservices\support\tracing-server\zipkin-server-2.21.5-exec.jar
+
+The Zipkin UI also presents a Dependency diagram showing how many traced requests 
+went through each application.
+
+You can open the Zipkin Web UI in your web browser: 
+
+http://localhost:9411/zipkin/
+
+To enable our microservices to send trace events to the Zipkin server we have added 
+the spring-cloud-starter-sleuth dependency.
+
+You should install RabbitMQ server. That trace events are sent to the Zipkin server 
+using RabbitMQ.

@@ -24,7 +24,10 @@ import java.net.URI;
 @RefreshScope
 public class ProductApiController {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    //private RestTemplate restTemplate = new RestTemplate();
+	//To make it possible for Spring Cloud Sleuth to add tracing headers to the outgoing requests
+    @Autowired
+    private RestTemplate restTemplate;
     
     @Autowired
     Util util;

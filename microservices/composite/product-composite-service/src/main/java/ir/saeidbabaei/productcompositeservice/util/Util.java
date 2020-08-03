@@ -5,9 +5,11 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 
 /**
@@ -58,6 +60,11 @@ public class Util {
 
     public <T> ResponseEntity<T> createResponse(T body, HttpStatus httpStatus) {
         return new ResponseEntity<>(body, httpStatus);
+    }
+    
+    @Bean
+    public RestTemplate getRestTemplate() {
+        return new RestTemplate();
     }
     
 }
