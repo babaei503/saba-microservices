@@ -25,11 +25,11 @@ spring:
       server:
         git:
 # Configuration of a local Git-repo for development locally via file: protocol        
-          uri: file:///E:/source/saba-microsevices-config
+#          uri: file:///E:/source/saba-microsevices-config
 # Configuration of a remote Git-repo          
-#          uri: https://github.com/babaei503/saba-microsevices-config.git
-#          username: YourGitUser
-#          password: YourGitPass
+          uri: https://github.com/babaei503/saba-microsevices-config.git
+          username: #YourGitUser
+          password: #YourGitPass
   security:
     user:
       name: ${saba.appconfig.configUser}
@@ -47,9 +47,17 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 10
     instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+    preferIpAddress: false
               
 ---
 
 spring.rabbitmq:
   host: localhost
-  port: 5672  
+  port: 5672
+     
+---
+
+spring:
+  profiles: docker
+  rabbitmq:
+    host: rabbitmq

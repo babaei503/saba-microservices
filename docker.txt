@@ -1,0 +1,21 @@
+docker pull rabbitmq:3.8.6-management-alpine
+
+docker image ls
+docker container ls
+
+docker image rm imageID
+docker container rm containerID
+
+docker ps -aq
+docker restart my_container
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+
+docker run -p 8761:8761 -e "SPRING_PROFILES_ACTIVE=peer1" -td saba/discovery-server:latest
+
+docker rmi $(docker images -f "dangling=true" -q)
+
+docker-compose up -d
+docker-compose up --build
+docker-compose down
+

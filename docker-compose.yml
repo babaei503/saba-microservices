@@ -1,0 +1,269 @@
+# This file uses the version 3 docker-compose file format
+#
+# This runs the saba-microservices containers, using docker-compose's
+# default networking to wire the containers together.
+#
+# Note that this file is meant for learning, not production deployments.
+
+version: "3"
+services:
+
+# RabbitMQ server
+  rabbitmq:
+    image: rabbitmq:3.8.6-management-alpine
+    restart: on-failure
+    container_name: rabbitmq
+    ports:
+    #    - 5672:5672
+        - 15672:15672
+
+# Discovery servers
+  eureka1:
+    image: saba/discovery-server:latest
+    restart: on-failure
+    container_name: eureka1
+    ports:
+      - "8761:8761" 
+    environment:
+      - "SPRING_PROFILES_ACTIVE=peer1"
+
+  eureka2:
+    image: saba/discovery-server:latest
+    restart: on-failure
+    container_name: eureka2
+    ports:
+      - "8762:8762" 
+    environment:
+      - "SPRING_PROFILES_ACTIVE=peer2"
+       
+  eureka3:
+    image: saba/discovery-server:latest
+    restart: on-failure
+    container_name: eureka3     
+    ports:
+      - "8763:8763" 
+    environment:
+      - "SPRING_PROFILES_ACTIVE=peer3"
+
+# Config server      
+  configserver:
+    image: saba/config-server:latest
+    restart: on-failure
+    container_name: configserver
+    ports:
+      - "8888:8888" 
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - rabbitmq
+
+# Edge server 
+  edgeserver:
+    image: saba/edge-server:latest
+    restart: on-failure
+    container_name: edgeserver
+    ports:
+      - "8765:8765"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - eureka1
+      - configserver
+      
+# Auth server      
+  mysql-auth-server:
+    restart: always
+    container_name: mysql-auth-server
+    image: mysql:latest
+    volumes:
+      - ./microservices/support/auth-server/src/main/resources/authdb.sql:/docker-entrypoint-initdb.d/authdb.sql
+    ports:
+      - "3306:3306"      
+    environment:
+      MYSQL_DATABASE: authdb
+      MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_PASS: a+123456 # TODO: Change this
+      
+  authserver:
+    image: saba/auth-server:latest
+    restart: on-failure
+    container_name: authserver
+    #ports:
+    #  - "9999:9999"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - edgeserver
+      - mysql-auth-server
+
+# Business services      
+  mysql-product-service:
+    restart: always
+    container_name: mysql-product-service
+    image: mysql:latest
+    volumes:
+      - ./microservices/core/product-service/src/main/resources/productdb.sql:/docker-entrypoint-initdb.d/productdb.sql       
+    environment:
+      MYSQL_DATABASE: productdb
+      MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_PASS: a+123456 # TODO: Change this
+      
+  product-service:
+    image: saba/product-service:latest
+    restart: on-failure
+    container_name: product-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - edgeserver
+      - mysql-product-service
+      
+  mysql-product-review-service:
+    restart: always
+    container_name: mysql-product-review-service
+    image: mysql:latest
+    volumes:
+      - ./microservices/core/product-review-service/src/main/resources/reviewdb.sql:/docker-entrypoint-initdb.d/reviewdb.sql        
+    environment:
+      MYSQL_DATABASE: productreviewdb
+      MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_PASS: a+123456 # TODO: Change this
+      
+  product-review-service:
+    image: saba/product-review-service:latest
+    restart: on-failure
+    container_name: product-review-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - edgeserver
+      - mysql-product-review-service
+      
+  mysql-product-recommendation-service:
+    restart: always
+    container_name: mysql-product-recommendation-service
+    image: mysql:latest
+    volumes:
+      - ./microservices/core/product-recommendation-service/src/main/resources/recommendationdb.sql:/docker-entrypoint-initdb.d/recommendationdb.sql         
+    environment:
+      MYSQL_DATABASE: productrecommendationdb
+      MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_PASS: a+123456 # TODO: Change this
+      
+  product-recommendation-service:
+    image: saba/product-recommendation-service:latest
+    restart: on-failure
+    container_name: product-recommendation-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - edgeserver
+      - mysql-product-recommendation-service
+
+  product-composite-service:
+    image: saba/product-composite-service:latest
+    restart: on-failure
+    container_name: product-composite-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - product-service
+      - product-review-service
+      - product-recommendation-service
+            
+  product-api-service:
+    image: saba/product-api-service:latest
+    restart: on-failure
+    container_name: product-api-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - product-composite-service
+
+# Monitoring services
+  turbine-service:
+    image: saba/turbine-service:latest
+    restart: on-failure
+    container_name: turbine-service
+    ports:
+      - "8989:8989"    
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - configserver     
+
+  dashboard-service:
+    image: saba/dashboard-service:latest
+    restart: on-failure
+    container_name: dashboard-service
+    ports:
+      - "7979:7979"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"          
+    depends_on:
+      - configserver
+      
+  zipkin-storage:
+    image: openzipkin/zipkin-mysql
+    restart: on-failure
+    container_name: zipkin-mysql
+
+  zipkin:
+    image: openzipkin/zipkin
+    restart: on-failure
+    container_name: zipkin
+    environment:
+      - "STORAGE_TYPE=mysql"
+      - "MYSQL_HOST=zipkin-mysql"
+      - "RABBIT_ADDRESSES=rabbitmq:5672"
+      - "RABBIT_USER=guest"
+      - "RABBIT_PASSWORD=guest"
+    ports:
+      - 9411:9411
+    depends_on:
+      - zipkin-storage
+
+  # Adds a cron to process spans since midnight every hour, and all spans each day
+  zipkin-dependencies:
+    image: openzipkin/zipkin-dependencies
+    restart: on-failure
+    container_name: zipkin-dependencies
+    entrypoint: crond -f
+    environment:
+      - "STORAGE_TYPE=mysql"
+      - "MYSQL_HOST=zipkin-mysql"
+      - "MYSQL_USER=zipkin"
+      - "MYSQL_PASS=zipkin"
+    depends_on:
+      - zipkin-storage
+
+  prometheus:
+    image: prom/prometheus
+    restart: on-failure
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    depends_on:
+      - zipkin-storage
+    volumes:
+      - ./microservices/support/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    restart: on-failure
+    container_name: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    environment:
+      - "GF_AUTH_ANONYMOUS_ENABLED=true"
+      - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"

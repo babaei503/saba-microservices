@@ -38,4 +38,13 @@ eureka:
       defaultZone: >-
         http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/
   instance:
-    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}     
+    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+    preferIpAddress: false
+     
+---
+
+spring:
+  profiles: docker
+  cloud:
+    config:    
+      uri: http://configserver:8888    

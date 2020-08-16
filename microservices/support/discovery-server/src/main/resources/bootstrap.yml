@@ -29,6 +29,7 @@ eureka:
   instance:
     appName: SABA-Service-Registry-Cluster
     leaseRenewalIntervalInSeconds: 10
+    preferIpAddress: false
   environment: local
 
   

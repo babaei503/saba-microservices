@@ -5,6 +5,9 @@ you can run start-base-infra-micros.bat and then start-infra-micros.bat
 in windows to run all infrastructure microservices.
 you can run start-busns-micros.bat in windows to run all business microservices.
 
+To be able to create docker images and run the microservices in a 
+Docker environment you can run docker-build-run.bat
+
 ## Eureka Server
 
 Run this project as a Spring Boot app (e.g. import into IDE and run
@@ -125,6 +128,9 @@ to monitor, for example The Turbine dashboard will be accessible at:
 
 http://localhost:8989/turbine.stream?cluster=default
 
+for Docker environment:
+http://turbine-service:8989/turbine.stream?cluster=default
+
 ## Authentication and Authorization Server
 
 Run this project as a Spring Boot app (e.g. import into IDE and run
@@ -241,5 +247,39 @@ http://localhost:9411/zipkin/
 To enable our microservices to send trace events to the Zipkin server we have added 
 the spring-cloud-starter-sleuth dependency.
 
-You should install RabbitMQ server. That trace events are sent to the Zipkin server 
+You should install RabbitMQ server. The trace events are sent to the Zipkin server 
 using RabbitMQ.
+
+## Prometheus
+
+Just for Docker environment!
+
+Prometheus is used for event monitoring and alerting. It records real-time metrics 
+in a time series database built using a HTTP pull model, with flexible queries and 
+real-time alerting.
+
+You can open the Prometheus Web UI in your web browser: 
+
+http://localhost:9090/graph
+
+for example enter process_cpu_usage and click Execute button.
+
+## Grafana
+
+Just for Docker environment!
+
+Grafana is an analytics and interactive visualization web application. It provides 
+charts, graphs, and alerts for the web when connected to supported data sources. 
+Grafana supports querying Prometheus.
+
+You can open the Grafana Web UI in your web browser: 
+
+http://localhost:3000/
+
+Create a "Prometheus" datasource and set the Prometheus server URL 
+to http://localhost:9090
+
+Import 1598 (Zipkin / Prometheus) dashboard or create a new one.
+
+Enjoy! 
+

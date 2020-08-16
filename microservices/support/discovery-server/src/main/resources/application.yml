@@ -13,17 +13,12 @@ saba:
         
 spring:
   profiles:
-    active: peer2        
-    
+    active: peer1        
+
 ---
-    
-spring:
-  profiles: peer1
-server:
-  port: ${saba.appconfig.servers.server1.port}
+
 eureka:
   instance:
-    hostname: ${saba.appconfig.servers.server1.host}
     instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
   client:
     serviceUrl:      
@@ -33,6 +28,16 @@ eureka:
         http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
 
 ---
+    
+spring:
+  profiles: peer1
+server:
+  port: ${saba.appconfig.servers.server1.port}
+eureka:
+  instance:
+    hostname: ${saba.appconfig.servers.server1.host}
+
+---
 
 spring:
   profiles: peer2
@@ -40,14 +45,7 @@ server:
   port: ${saba.appconfig.servers.server2.port}
 eureka:
   instance:
-    hostname: ${saba.appconfig.servers.server2.host}
-    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}} 
-  client:
-    serviceUrl:      
-      defaultZone: >-
-        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/,
-        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server2.host}:${saba.appconfig.servers.server2.port}/eureka/,
-        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
+    hostname: ${saba.appconfig.servers.server2.host} 
       
 ---
 
@@ -58,10 +56,3 @@ server:
 eureka:
   instance:
     hostname: ${saba.appconfig.servers.server3.host}
-    instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
-  client:
-    serviceUrl:      
-      defaultZone: >-
-        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server1.host}:${saba.appconfig.servers.server1.port}/eureka/,
-        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server2.host}:${saba.appconfig.servers.server2.port}/eureka/,
-        http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
