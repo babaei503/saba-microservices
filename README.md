@@ -277,9 +277,35 @@ You can open the Grafana Web UI in your web browser:
 http://localhost:3000/
 
 Create a "Prometheus" datasource and set the Prometheus server URL 
-to http://localhost:9090
+to http://localhost:9090 and access to Browser.
 
 Import 1598 (Zipkin / Prometheus) dashboard or create a new one.
 
 Enjoy! 
 
+## ELK stack (Elasticsearch, Logstash and Kibana)
+
+Just for Docker environment!
+
+The ELK stack consist of:
+
+Elasticsearch: Elasticsearch is a distributed and scalable full-text search database, 
+that allows you to store and search large volumes of log events.
+
+Logstash: Logstash can collect log events from multiple types of sources using input 
+plug-ins, transform it to a format you prefer using filter and codec plug-ins and send 
+it to a number of destinations using output plug-ins.
+
+Kibana: Kibana lets you visualize and analyze your log events stored in Elasticsearch.
+
+Log events are sent to elasticsearch by Logstash for storage, to be picked up by Kibana.
+
+You can open the Kibana Web UI in your web browser: 
+
+http://localhost:5601
+
+Select "Discover" from "Visualize and Explore Data" panel. 
+Create index pattern "logstash-*"
+Select "Discover" from "Visualize and Explore Data" panel again.
+
+You can add columns from left panel. for example ml_service and ml_message.

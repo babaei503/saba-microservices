@@ -2,6 +2,8 @@ package ir.saeidbabaei.productcompositeservice.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import ir.saeidbabaei.productcompositeservice.model.Review;
 @Service
 public class ProductCompositeService implements IProductCompositeService {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ProductCompositeService.class);
+	
 	@Autowired
 	ProductCompositeIntegration productCompositeIntegration;
 	
@@ -28,6 +32,7 @@ public class ProductCompositeService implements IProductCompositeService {
         Product product = null;
         if (!productResult.getStatusCode().is2xxSuccessful()) {
             // Something went wrong with getProduct, skip the product-information in the response
+        	LOG.debug("Call to getBasicProductInfo failed: {}", productResult.getStatusCode());
         } else {
             product = productResult.getBody();
         }
@@ -40,6 +45,7 @@ public class ProductCompositeService implements IProductCompositeService {
         List<Review> reviews = null;
         if (!reviewsResult.getStatusCode().is2xxSuccessful()) {
             // Something went wrong with getReviews, skip the review-information in the response
+        	LOG.debug("Call to getReviews failed: {}", reviewsResult.getStatusCode());
         } else {
             reviews = reviewsResult.getBody();
         }
@@ -51,6 +57,7 @@ public class ProductCompositeService implements IProductCompositeService {
         List<Recommendation> recommendations = null;
         if (!recommendationResult.getStatusCode().is2xxSuccessful()) {
             // Something went wrong with getRecommendations, skip the recommendation-information in the response
+        	LOG.debug("Call to getRecommendations failed: {}", recommendationResult.getStatusCode());
         } else {
             recommendations = recommendationResult.getBody();
         }

@@ -51,6 +51,14 @@ eureka:
               
 ---
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health
+
+---
+
 spring.rabbitmq:
   host: localhost
   port: 5672

@@ -26,6 +26,14 @@ services:
       - "8761:8761" 
     environment:
       - "SPRING_PROFILES_ACTIVE=peer1"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+    depends_on:
+      - logstash
+    #Check logstash endpoint before run      
+    command: sh -c "dockerize -wait tcp://localhost:9600/?pretty -timeout 30s -wait-retry-interval 3s"
 
   eureka2:
     image: saba/discovery-server:latest
@@ -35,7 +43,14 @@ services:
       - "8762:8762" 
     environment:
       - "SPRING_PROFILES_ACTIVE=peer2"
-       
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+    depends_on:
+      - logstash                
+    command: sh -c "dockerize -wait tcp://localhost:9600/?pretty -timeout 30s -wait-retry-interval 3s"
+           
   eureka3:
     image: saba/discovery-server:latest
     restart: on-failure
@@ -44,7 +59,14 @@ services:
       - "8763:8763" 
     environment:
       - "SPRING_PROFILES_ACTIVE=peer3"
-
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+    depends_on:
+      - logstash                
+    command: sh -c "dockerize -wait tcp://localhost:9600/?pretty -timeout 30s -wait-retry-interval 3s"
+    
 # Config server      
   configserver:
     image: saba/config-server:latest
@@ -54,8 +76,14 @@ services:
       - "8888:8888" 
     environment:
       - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"      
     depends_on:
       - rabbitmq
+      - logstash                 
+    command: sh -c "dockerize -wait tcp://localhost:9600/?pretty -wait http://guest:guest@localhost:15672/api/healthchecks/node -timeout 30s -wait-retry-interval 3s"            
 
 # Edge server 
   edgeserver:
@@ -65,11 +93,16 @@ services:
     ports:
       - "8765:8765"
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"              
     depends_on:
       - eureka1
       - configserver
-      
+    command: sh -c "dockerize -wait http://admin:admin@localhost:8761/actuator/health -wait http://admin:admin@localhost:8888/actuator/health -timeout 30s -wait-retry-interval 3s"
+    
 # Auth server      
   mysql-auth-server:
     restart: always
@@ -93,10 +126,15 @@ services:
     #ports:
     #  - "9999:9999"
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"               
     depends_on:
       - edgeserver
       - mysql-auth-server
+    command: sh -c "dockerize -wait http://localhost:8765/actuator/health -timeout 30s -wait-retry-interval 3s"
 
 # Business services      
   mysql-product-service:
@@ -117,10 +155,15 @@ services:
     restart: on-failure
     container_name: product-service
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"              
     depends_on:
       - edgeserver
       - mysql-product-service
+    command: sh -c "dockerize -wait http://localhost:8765/actuator/health -timeout 30s -wait-retry-interval 3s"
       
   mysql-product-review-service:
     restart: always
@@ -140,10 +183,15 @@ services:
     restart: on-failure
     container_name: product-review-service
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"         
     depends_on:
       - edgeserver
       - mysql-product-review-service
+    command: sh -c "dockerize -wait http://localhost:8765/actuator/health -timeout 30s -wait-retry-interval 3s"
       
   mysql-product-recommendation-service:
     restart: always
@@ -163,17 +211,26 @@ services:
     restart: on-failure
     container_name: product-recommendation-service
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"               
     depends_on:
       - edgeserver
       - mysql-product-recommendation-service
+    command: sh -c "dockerize -wait http://localhost:8765/actuator/health -timeout 30s -wait-retry-interval 3s"
 
   product-composite-service:
     image: saba/product-composite-service:latest
     restart: on-failure
     container_name: product-composite-service
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"            
     depends_on:
       - product-service
       - product-review-service
@@ -184,7 +241,11 @@ services:
     restart: on-failure
     container_name: product-api-service
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"               
     depends_on:
       - product-composite-service
 
@@ -196,9 +257,14 @@ services:
     ports:
       - "8989:8989"    
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"             
     depends_on:
       - configserver     
+    command: sh -c "dockerize -wait http://admin:admin@localhost:8888/actuator/health -timeout 30s -wait-retry-interval 3s"
 
   dashboard-service:
     image: saba/dashboard-service:latest
@@ -207,9 +273,14 @@ services:
     ports:
       - "7979:7979"
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"          
+      - "SPRING_PROFILES_ACTIVE=docker"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"               
     depends_on:
       - configserver
+    command: sh -c "dockerize -wait http://admin:admin@localhost:8888/actuator/health -timeout 30s -wait-retry-interval 3s"
       
   zipkin-storage:
     image: openzipkin/zipkin-mysql
@@ -226,10 +297,16 @@ services:
       - "RABBIT_ADDRESSES=rabbitmq:5672"
       - "RABBIT_USER=guest"
       - "RABBIT_PASSWORD=guest"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"      
     ports:
       - 9411:9411
     depends_on:
       - zipkin-storage
+      - logstash
+    command: sh -c "dockerize -wait tcp://localhost:9600/?pretty -timeout 30s -wait-retry-interval 3s"
 
   # Adds a cron to process spans since midnight every hour, and all spans each day
   zipkin-dependencies:
@@ -251,10 +328,10 @@ services:
     container_name: prometheus
     ports:
       - 9090:9090
+    volumes:
+      - ./microservices/support/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml          
     depends_on:
       - zipkin-storage
-    volumes:
-      - ./microservices/support/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
     image: grafana/grafana
@@ -267,3 +344,81 @@ services:
     environment:
       - "GF_AUTH_ANONYMOUS_ENABLED=true"
       - "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://127.0.0.1:25826"
+    depends_on:
+      - logstash
+    command: sh -c "dockerize -wait tcp://localhost:9600/?pretty -timeout 30s -wait-retry-interval 3s"
+
+  elasticsearch01:
+    image: elasticsearch:7.8.1
+    restart: on-failure
+    container_name: elasticsearch01
+    ports:
+      - "9200:9200"
+    environment:
+      - node.name=elasticsearch01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=elasticsearch02
+      - cluster.initial_master_nodes=elasticsearch01,elasticsearch02
+      - bootstrap.memory_lock=true 
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      #- discovery.type=single-node      
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+      
+  elasticsearch02:
+    image: elasticsearch:7.8.1
+    restart: on-failure
+    container_name: elasticsearch02
+    ports:
+      - "9201:9201"
+    environment:
+      - node.name=elasticsearch02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=elasticsearch01
+      - cluster.initial_master_nodes=elasticsearch01,elasticsearch02
+      - bootstrap.memory_lock=true 
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data02:/usr/share/elasticsearch/data                    
+
+  kibana:
+    image: kibana:7.8.1
+    restart: on-failure
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch01:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch02:9200    
+    depends_on:
+      - elasticsearch01
+
+  logstash:
+    image: logstash:7.8.1
+    restart: on-failure
+    container_name: logstash
+    ports:
+      - "25826:25826"       
+    volumes:
+      - ./microservices/support/elk-config:/elk-config
+    command: logstash -f /elk-config/logstash.config
+    depends_on:
+      - elasticsearch01
+      
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local    

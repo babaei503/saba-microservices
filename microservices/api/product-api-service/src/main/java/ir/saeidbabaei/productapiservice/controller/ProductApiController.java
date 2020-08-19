@@ -4,6 +4,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import ir.saeidbabaei.productapiservice.util.Util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -24,6 +26,8 @@ import java.net.URI;
 @RefreshScope
 public class ProductApiController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ProductApiController.class);
+    
     //private RestTemplate restTemplate = new RestTemplate();
 	//To make it possible for Spring Cloud Sleuth to add tracing headers to the outgoing requests
     @Autowired
@@ -46,13 +50,18 @@ public class ProductApiController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @HystrixCommand(fallbackMethod = "defaultProductComposite")
     public ResponseEntity<String> getProductComposite(@PathVariable int productId) {
-
+        
     	URI uri= util.getServiceUrl(productCompositeService);
 
         String url = uri.toString() + "/api/product-composite/" + productId;
 
+        LOG.debug("Get Product Composite from URL: {}", url);
+        
         ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
 
+        LOG.info("Get Product Composite http-status: {}", result.getStatusCode());
+        LOG.debug("Get Product Composite body: {}", result.getBody());
+        
         return result;
     }
 
@@ -64,6 +73,8 @@ public class ProductApiController {
      */
     public ResponseEntity<String> defaultProductComposite(
         @PathVariable int productId) {
+
+    	LOG.warn("Using fallback method for product-composite-service.");
 
         return new ResponseEntity<String>("", HttpStatus.BAD_GATEWAY);
     }

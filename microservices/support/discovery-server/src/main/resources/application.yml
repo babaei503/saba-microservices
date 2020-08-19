@@ -28,7 +28,15 @@ eureka:
         http://${saba.appconfig.user}:${saba.appconfig.password}@${saba.appconfig.servers.server3.host}:${saba.appconfig.servers.server3.port}/eureka/
 
 ---
-    
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health
+        
+---
+            
 spring:
   profiles: peer1
 server:
