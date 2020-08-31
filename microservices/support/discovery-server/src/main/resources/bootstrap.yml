@@ -13,7 +13,9 @@ spring:
       enable: true
     user:
       name: ${saba.appconfig.user}
-      password: ${saba.appconfig.password} 
+      password: ${saba.appconfig.password}
+  banner:
+    location: classpath:/saba-banner.txt      
            
 ---
          

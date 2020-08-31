@@ -16,6 +16,8 @@ server:
 spring:
   application:
     name: saba-config-server
+  banner:
+    location: classpath:/saba-banner.txt    
   
 ---
 
