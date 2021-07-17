@@ -19,3 +19,12 @@ docker-compose up -d
 docker-compose up --build
 docker-compose down
 
+docker swarm init
+docker swarm join --token TokenFromManager ManagerIP:Port
+docker node ls
+docker swarm leave --force
+
+docker stack deploy --compose-file docker-compose.yml StackName
+docker service ps ServiceName --no-trunc
+docker service scale ServiceName=N
+docker stack rm StackName

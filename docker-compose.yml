@@ -116,7 +116,7 @@ services:
       MYSQL_DATABASE: authdb
       MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
       MYSQL_ROOT_HOST: '%'
-      MYSQL_USER: root
+      #MYSQL_USER: root
       MYSQL_PASS: a+123456 # TODO: Change this
       
   authserver:
@@ -147,7 +147,7 @@ services:
       MYSQL_DATABASE: productdb
       MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
       MYSQL_ROOT_HOST: '%'
-      MYSQL_USER: root
+      #MYSQL_USER: root
       MYSQL_PASS: a+123456 # TODO: Change this
       
   product-service:
@@ -175,7 +175,7 @@ services:
       MYSQL_DATABASE: productreviewdb
       MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
       MYSQL_ROOT_HOST: '%'
-      MYSQL_USER: root
+      #MYSQL_USER: root
       MYSQL_PASS: a+123456 # TODO: Change this
       
   product-review-service:
@@ -203,7 +203,7 @@ services:
       MYSQL_DATABASE: productrecommendationdb
       MYSQL_ROOT_PASSWORD: a+123456 # TODO: Change this
       MYSQL_ROOT_HOST: '%'
-      MYSQL_USER: root
+      #MYSQL_USER: root
       MYSQL_PASS: a+123456 # TODO: Change this
       
   product-recommendation-service:
@@ -364,7 +364,7 @@ services:
       - discovery.seed_hosts=elasticsearch02
       - cluster.initial_master_nodes=elasticsearch01,elasticsearch02
       - bootstrap.memory_lock=true 
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
       #- discovery.type=single-node      
     ulimits:
       memlock:
@@ -385,7 +385,7 @@ services:
       - discovery.seed_hosts=elasticsearch01
       - cluster.initial_master_nodes=elasticsearch01,elasticsearch02
       - bootstrap.memory_lock=true 
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
     ulimits:
       memlock:
         soft: -1
